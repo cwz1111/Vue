@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+        <div id="app">
+            <cpn @cbtnclick='btn'></cpn>
+        </div>
+        <!-- 子组件 -->
+        <template id="cpn">
+            <div>
+                <button v-for='item in productList' @click='btnclick(item)'>{{ item }}</button>
+
+            </div>
+        </template>
+        <script>
+            const cpn={
+                template:'#cpn',
+                data(){
+                    return{
+                        productList:['地理','数学','语文','英语'],
+                        age:444
+                    }
+                },
+                methods:{
+                    btnclick(item){
+                        // 自定义方法
+                            this.$emit('cbtnclick', item);
+                    }
+                }
+            }
+            const app =new Vue({
+                el:'#app',
+                data:{
+                    age:12
+                },
+                methods:{
+                    // 拿到子组件传来数据
+                    btn(item){
+                        console.log(item);
+                    }
+                },
+                components:{
+                    cpn
+                }
+            })
+
+        </script>
+</body>
+</html>

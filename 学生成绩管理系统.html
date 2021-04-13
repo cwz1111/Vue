@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #app{
+            width: 60%;
+            margin: 70px auto;
+        }
+        td{
+            text-align: center;
+        }
+        table input{
+            width: 100%;
+            height: 30px;
+        }
+       form{
+           background-color: blanchedalmond;
+       }
+    </style>
+<body>
+    <div id="app">
+            <form action="" v-show='isShow'>
+                <input type="text" placeholder="请输入学号" v-model="person1.id">
+                <input type="text" placeholder="请输入姓名" v-model="person1.name">
+                <input type="text" placeholder="请输入年龄" v-model="person1.age">
+                <input type="submit" value="新增" @click.prevent='addPerson'>
+                <input type="submit" value="查询" @click.prevent='search'>
+            </form>
+            <table border="1" cellspacing="0">
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+                <tr v-for='(person,index) in persons' >
+                    <td><input type="text" v-model="person.id" :disabled='person.isDisabled'></td>
+                    <td><input type="text" v-model="person.name" :disabled='person.isDisabled'></td>
+                    <td><input type="text" v-model="person.age":disabled='person.isDisabled'></td>
+                    <td ><input type="text" name="" id="" :value='person.time | dateFormart'></td>
+                    <td><button @click='edit(person)'>编辑</button><button @click='del(index)'>删除</button><button @click='show'>更多</button></td>
+                </tr>
+            </table>
+    </div>
+    <script>
+        Vue.filter('dateFormart', function (value) {
+            let date=new Date(value);
+            let year= date.getFullYear();
+            let month = date.getMonth()+1;
+            let day = date.getDate();
+            let hour =date.getHours();
+            let minute = date.getMinutes();
+            let second =date.getSeconds();
+            return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+
+        });
+        var app = new Vue({
+            el:'#app',
+            data:{
+
+                persons:[
+                    {
+                        id:'1',
+                        name:'xiaoming',
+                        age:13,
+                        isDisabled:true,
+                        time: Date.now()
+                    },
+                    {
+                        id:'2',
+                        name:'xiaoming',
+                        age:125,
+                        isDisabled:true,
+                        time: Date.now()
+                    },
+                    {
+                        id:'3',
+                        name:'xiaoming',
+                        age:124,
+                        isDisabled:true,
+                        time: Date.now()
+                    },
+                    {
+                        id:'4',
+                        name:'xiaoming',
+                        age:127,
+                        isDisabled:true,
+                        time: Date.now()
+                    },
+                ],
+                    isShow:true,
+                    person1:{
+                        id:'',
+                        name:'',
+                        age:'',
+                        time: '',
+                        isDisabled:true,
+                    }
+
+            },
+            methods:{
+                edit(person){
+                    person.isDisabled=!person.isDisabled
+                },
+                show(){
+                    this.isShow=!this.isShow
+                },
+                addPerson(){
+                    this.person1.time=Date.now();
+                    this.persons.push(this.person1);
+                    this.person1={
+                        id:'',
+                        name:'',
+                        age:'',
+                        time: '',
+                        isDisabled:true,
+                    }
+                },
+                del(index){
+                    this.persons.splice(index,1)
+                },
+                search(){
+                    let newPersons=this.persons.filter((person)=>{
+                        return this.person1.id === person.id
+
+                    })
+                   this.persons=newPersons
+               
+                }
+            }
+        
+        })
+        
+    </script>
+</body>
+</html>
